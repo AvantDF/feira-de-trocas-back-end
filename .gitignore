@@ -26,3 +26,7 @@ pids/
 *.sqlite
 *.db
 *.zip
+/prisma/migrations/
+/src/generated/prisma
+
+/src/generated/prisma

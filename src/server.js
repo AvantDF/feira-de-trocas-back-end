@@ -1,17 +1,14 @@
-const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
-const errorHandler = require('./middlewares/errorHandler');
+import express from 'express'
+import cors from 'cors'
+import 'dotenv/config'
+import userRoutes from './routes/usersRoutes.js'
 
-const routes = require('./routes');
+const app = express()
 
-const app = express();
-const PORT = process.env.PORT || 3333;
+app.use(cors())
+app.use(express.json())
 
-app.use(cors());
-app.use(express.json());
-app.use(routes);
-app.use(errorHandler);
-app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
-});
+// Routes
+app.use('/', userRoutes)
+
+export default app
