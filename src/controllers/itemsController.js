@@ -34,3 +34,32 @@ export const createItem = async (req, res) => {
     return res.status(500).json({ error: 'Erro No servidor' })
   }
 }
+
+export const listItems = async (req, res) => {
+  try {
+    const { categoria, busca } = req.query
+
+    // Monta o filtro dinamicamente
+    const where = {}
+
+    if (categoria) {
+      where.category_id = categoria
+    }
+
+    if (busca) {
+      where.OR = [
+        { name: { contains: busca, mode: 'insensitive' } },
+        { description: { contains: busca, mode: 'insensitive' } }
+      ]
+    }
+
+    const itens = await prisma.items.findMany({
+      where,
+      include: { categories: true }
+    })
+
+    return res.json(itens)
+  } catch (error) {
+    return res.status(500).json({ error: 'Erro ao listar itens.' })
+  }
+}
